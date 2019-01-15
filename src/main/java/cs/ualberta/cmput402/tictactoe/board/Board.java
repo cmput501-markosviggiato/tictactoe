@@ -43,6 +43,9 @@ public class Board {
             throw new InvalidMoveException(stringBuilder.toString());
         }else{
             board[row][col] = currentPlayer;
+			
+			if (!isThereEmptySquare())
+            	throw new InvalidMoveException("tie");
 
             if (hasWon(row, col))
                 winner = currentPlayer;
@@ -70,6 +73,17 @@ public class Board {
             default:
                 return "UNKNOWN SYMBOL";
         }
+    }
+	
+	public boolean isThereEmptySquare() {
+    	for(int i  = 0; i < 3; i++){
+            for(int j = 0 ; j < 3; j++){
+            	if (board[i][j].equals(Player.NONE))
+            		return true;
+            }
+    	}
+    	
+    	return false;
     }
 
     public boolean hasWon(int lastColPlayed, int lastRowPlayed){

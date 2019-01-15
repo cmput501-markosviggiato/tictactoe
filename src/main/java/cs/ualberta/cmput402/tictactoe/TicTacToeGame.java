@@ -40,6 +40,13 @@ public class TicTacToeGame {
             try {
                 board.playMove(Integer.parseInt(input[0]), Integer.parseInt(input[1]));
             } catch (InvalidMoveException e) {
+				
+				if (e.getMessage().equals("tie")) {
+            		board.printBoard();
+            		System.out.println("Tied game! This is the end of the game.");
+            		return;
+            	}
+				
                 System.out.println("Invalid coordinates. Try again");
                 promptNextPlayer();
             }
