@@ -44,6 +44,7 @@ public class TicTacToeGame {
 				if (e.getMessage().equals("tie")) {
             		board.printBoard();
             		System.out.println("Tied game! This is the end of the game.");
+					board.printScoreboard();
             		return;
             	}
 				
@@ -54,6 +55,7 @@ public class TicTacToeGame {
 
         board.printBoard();
         System.out.println("Player " + board.getWinner() + " has won the game!");
+		board.printScoreboard();
     }
 
     public static void main(String args[]){
