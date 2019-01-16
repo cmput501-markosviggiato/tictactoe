@@ -11,7 +11,7 @@ public class Board {
     private Player currentPlayer;
     private Player winner;
     private Player board[][];
-	private int numberWonGames[];
+    private int numberWonGames[];
     private int numberLostGames[];
     private int numberTiedGames;
 
@@ -20,7 +20,7 @@ public class Board {
         initBoard();
         winner = null;
         currentPlayer = Player.X;
-		// number of games won by players X and O, respectively
+	// number of games won by players X and O, respectively
         numberWonGames = new int[2];
         numberWonGames[0] = 0;
         numberWonGames[1] = 0;
@@ -56,10 +56,10 @@ public class Board {
         }else{
             board[row][col] = currentPlayer;
 			
-			if (!isThereEmptySquare()){
-				numberTiedGames =+ 1;
+	    if (!isThereEmptySquare()){
+		numberTiedGames =+ 1;
             	throw new InvalidMoveException("tie");
-			}
+	    }
 
             if (hasWon(row, col)) {
             	winner = currentPlayer;
