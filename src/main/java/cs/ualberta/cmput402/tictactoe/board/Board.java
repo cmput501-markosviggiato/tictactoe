@@ -11,12 +11,24 @@ public class Board {
     private Player currentPlayer;
     private Player winner;
     private Player board[][];
+    private int numberWonGames[];
+    private int numberLostGames[];
+    private int numberTiedGames;
 
     public Board(){
         board = new Player[3][3];
         initBoard();
         winner = null;
         currentPlayer = Player.X;
+	// number of games won by players X and O, respectively
+        numberWonGames = new int[2];
+        numberWonGames[0] = 0;
+        numberWonGames[1] = 0;
+        // number of games lost by players X and O, respectively
+        numberLostGames = new int[2];
+        numberLostGames[0] = 0;
+        numberLostGames[1] = 0;
+        numberTiedGames = 0;
     }
 
     private void initBoard(){
@@ -44,11 +56,23 @@ public class Board {
         }else{
             board[row][col] = currentPlayer;
 			
-			if (!isThereEmptySquare())
+	    if (!isThereEmptySquare()){
+		numberTiedGames =+ 1;
             	throw new InvalidMoveException("tie");
+	    }
 
-            if (hasWon(row, col))
-                winner = currentPlayer;
+            if (hasWon(row, col)) {
+            	winner = currentPlayer;
+            	if (winner.equals(Player.X)) {
+            		numberWonGames[0] =+ 1;
+            		numberLostGames[1] =+ 1;
+            	}
+            	else {
+            		numberWonGames[1] =+ 1;
+            		numberLostGames[0] =+ 1;
+            	}
+   
+            }
             else if(currentPlayer == Player.X)
                 currentPlayer = Player.O;
             else
@@ -128,6 +152,22 @@ public class Board {
             }
             System.out.println("----------");
         }
+    }
+	
+	public void printScoreboard() {
+    	System.out.println("\nScoreboard:\n");
+    	System.out.println("          |Won games |Lost games|Tied games");
+    	System.out.println("------------------------------------------");
+        System.out.print("Player X  |");
+        System.out.print(numberWonGames[0] + "         |");
+        System.out.print(numberLostGames[0] + "         |");
+        System.out.println(numberTiedGames);
+        System.out.println("------------------------------------------");
+        System.out.print("Player O  |");
+        System.out.print(numberWonGames[1] + "         |");
+        System.out.print(numberLostGames[1] + "         |");
+        System.out.println(numberTiedGames);
+        System.out.println("------------------------------------------");   
     }
 
     public Player getCurrentPlayer() {
