@@ -41,21 +41,21 @@ public class TicTacToeGame {
                 board.playMove(Integer.parseInt(input[0]), Integer.parseInt(input[1]));
             } catch (InvalidMoveException e) {
 				
-				if (e.getMessage().equals("tie")) {
+	    	if (e.getMessage().equals("tie")) {
             		board.printBoard();
             		System.out.println("Tied game! This is the end of the game.");
-					board.printScoreboard();
+			board.printScoreboard();
             		return;
             	}
 				
-                System.out.println("Invalid coordinates. Try again");
-                promptNextPlayer();
-            }
+            	System.out.println("Invalid coordinates. Try again");
+            	promptNextPlayer();
+              }
         }
 
         board.printBoard();
         System.out.println("Player " + board.getWinner() + " has won the game!");
-		board.printScoreboard();
+	board.printScoreboard();
     }
 
     public static void main(String args[]){
