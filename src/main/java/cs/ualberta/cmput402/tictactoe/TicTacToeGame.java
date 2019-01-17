@@ -107,9 +107,11 @@ public class TicTacToeGame {
         	Player winner = game.playGame();
         	if (winner != null)
         		calculateScores();
+        	printScoreboard();
         	System.out.println("\nDo you want to play another game?");
         	keepPlaying = keepPlayingScanner.nextLine();
         	if (keepPlaying.toLowerCase().equals("no")) {
+        		System.out.println("This is the end of the game! You can see the final scoreboard below.");
         		printScoreboard();
         	}
         }
