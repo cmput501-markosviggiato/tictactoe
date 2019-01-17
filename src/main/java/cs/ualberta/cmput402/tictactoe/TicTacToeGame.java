@@ -11,10 +11,10 @@ import java.util.Scanner;
  */
 public class TicTacToeGame {
 
-    private Board board;
-    private int numberWonGames[]; // number of games won by players X and O, respectively
-    private int numberLostGames[];// number of games lost by players X and O, respectively
-    private int numberTiedGames;
+    private static Board board;
+    private static int numberWonGames[]; // number of games won by players X and O, respectively
+    private static int numberLostGames[];// number of games lost by players X and O, respectively
+    private static int numberTiedGames;
 
     public void promptNextPlayer(){
         switch(board.getCurrentPlayer()){
