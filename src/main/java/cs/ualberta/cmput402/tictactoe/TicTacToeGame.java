@@ -16,10 +16,6 @@ public class TicTacToeGame {
     private int numberLostGames[];// number of games lost by players X and O, respectively
     private int numberTiedGames;
 
-    public TicTacToeGame(){
-        board = new Board();
-    }
-
     public void promptNextPlayer(){
         switch(board.getCurrentPlayer()){
             case X:
@@ -32,9 +28,8 @@ public class TicTacToeGame {
         }
     }
 
-    public void playGame(){
+    public Player playGame(){
         Scanner keyboardScanner = new Scanner(System.in);
-        initScoreboard();
 
         while (board.getWinner() == null){
             board.printBoard();
@@ -47,47 +42,32 @@ public class TicTacToeGame {
 				
 	    	if (e.getMessage().equals("tie")) {
             		board.printBoard();
-            		System.out.println("Tied game! This is the end of the game.");
+            		System.out.println("Tied game!");
             		numberTiedGames =+ 1;
-            		printScoreboard();
-            		return;
+            		return null;
             	}
 				
             	System.out.println("Invalid coordinates. Try again");
-            	promptNextPlayer();
               }
         }
 
         board.printBoard();
         System.out.println("Player " + board.getWinner() + " has won the game!");
-        calculateScores();
-        printScoreboard();
+        return board.getWinner();
     }
     
-    public void initScoreboard() {
-    	// number of games won by players X and O, respectively
-        numberWonGames = new int[2];
-        numberWonGames[0] = 0;
-        numberWonGames[1] = 0;
-        // number of games lost by players X and O, respectively
-        numberLostGames = new int[2];
-        numberLostGames[0] = 0;
-        numberLostGames[1] = 0;
-        numberTiedGames = 0;
-    }
-    
-    public void calculateScores() {
+    public static void calculateScores() {
     	if (board.getWinner().equals(Player.X)) {
-    		numberWonGames[0] =+ 1;
-    		numberLostGames[1] =+ 1;
+    		numberWonGames[0] = numberWonGames[0] + 1;
+    		numberLostGames[1] = numberLostGames[1] + 1;
     	}
     	else {
-    		numberWonGames[1] =+ 1;
-    		numberLostGames[0] =+ 1;
+    		numberWonGames[1] = numberWonGames[1] + 1;
+    		numberLostGames[0] = numberLostGames[0] + 1;
     	}
     }
     
-    public void printScoreboard() {
+    public static void printScoreboard() {
     	System.out.println("\nScoreboard:\n");
     	System.out.println("          |Won games |Lost games|Tied games");
     	System.out.println("------------------------------------------");
@@ -103,9 +83,35 @@ public class TicTacToeGame {
         System.out.println("------------------------------------------");   
     }
     
+    public static void initScoreboard() {
+    	// number of games won by players X and O, respectively
+        numberWonGames = new int[2];
+        numberWonGames[0] = 0;
+        numberWonGames[1] = 0;
+        // number of games lost by players X and O, respectively
+        numberLostGames = new int[2];
+        numberLostGames[0] = 0;
+        numberLostGames[1] = 0;
+        numberTiedGames = 0;
+    }
+    
 
     public static void main(String args[]){
-        TicTacToeGame game = new TicTacToeGame();
-        game.playGame();
+    	TicTacToeGame game = new TicTacToeGame();
+        String keepPlaying = "yes";
+        initScoreboard();
+        Scanner keepPlayingScanner = new Scanner(System.in);
+        
+        while(keepPlaying.toLowerCase().equals("yes")) {
+        	board = new Board();
+        	Player winner = game.playGame();
+        	if (winner != null)
+        		calculateScores();
+        	System.out.println("\nDo you want to play another game?");
+        	keepPlaying = keepPlayingScanner.nextLine();
+        	if (keepPlaying.toLowerCase().equals("no")) {
+        		printScoreboard();
+        	}
+        }
     }
 }
