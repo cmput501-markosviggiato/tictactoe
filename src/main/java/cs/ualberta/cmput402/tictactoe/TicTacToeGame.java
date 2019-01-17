@@ -12,6 +12,9 @@ import java.util.Scanner;
 public class TicTacToeGame {
 
     private Board board;
+    private int numberWonGames[]; // number of games won by players X and O, respectively
+    private int numberLostGames[];// number of games lost by players X and O, respectively
+    private int numberTiedGames;
 
     public TicTacToeGame(){
         board = new Board();
@@ -31,6 +34,7 @@ public class TicTacToeGame {
 
     public void playGame(){
         Scanner keyboardScanner = new Scanner(System.in);
+        initScoreboard();
 
         while (board.getWinner() == null){
             board.printBoard();
@@ -44,7 +48,8 @@ public class TicTacToeGame {
 	    	if (e.getMessage().equals("tie")) {
             		board.printBoard();
             		System.out.println("Tied game! This is the end of the game.");
-			board.printScoreboard();
+            		numberTiedGames =+ 1;
+            		printScoreboard();
             		return;
             	}
 				
@@ -55,8 +60,49 @@ public class TicTacToeGame {
 
         board.printBoard();
         System.out.println("Player " + board.getWinner() + " has won the game!");
-	board.printScoreboard();
+        calculateScores();
+        printScoreboard();
     }
+    
+    public void initScoreboard() {
+    	// number of games won by players X and O, respectively
+        numberWonGames = new int[2];
+        numberWonGames[0] = 0;
+        numberWonGames[1] = 0;
+        // number of games lost by players X and O, respectively
+        numberLostGames = new int[2];
+        numberLostGames[0] = 0;
+        numberLostGames[1] = 0;
+        numberTiedGames = 0;
+    }
+    
+    public void calculateScores() {
+    	if (board.getWinner().equals(Player.X)) {
+    		numberWonGames[0] =+ 1;
+    		numberLostGames[1] =+ 1;
+    	}
+    	else {
+    		numberWonGames[1] =+ 1;
+    		numberLostGames[0] =+ 1;
+    	}
+    }
+    
+    public void printScoreboard() {
+    	System.out.println("\nScoreboard:\n");
+    	System.out.println("          |Won games |Lost games|Tied games");
+    	System.out.println("------------------------------------------");
+        System.out.print("Player X  |");
+        System.out.print(numberWonGames[0] + "         |");
+        System.out.print(numberLostGames[0] + "         |");
+        System.out.println(numberTiedGames);
+        System.out.println("------------------------------------------");
+        System.out.print("Player O  |");
+        System.out.print(numberWonGames[1] + "         |");
+        System.out.print(numberLostGames[1] + "         |");
+        System.out.println(numberTiedGames);
+        System.out.println("------------------------------------------");   
+    }
+    
 
     public static void main(String args[]){
         TicTacToeGame game = new TicTacToeGame();
