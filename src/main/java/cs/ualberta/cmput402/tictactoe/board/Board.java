@@ -43,12 +43,12 @@ public class Board {
             throw new InvalidMoveException(stringBuilder.toString());
         }else{
             board[row][col] = currentPlayer;
-			
-	    if (!isThereEmptySquare())
-            	throw new InvalidMoveException("tie");
+
+            if (!isThereEmptySquare())
+                throw new InvalidMoveException("tie");
 
             if (hasWon(row, col))
-            	winner = currentPlayer;
+                winner = currentPlayer;
             else if(currentPlayer == Player.X)
                 currentPlayer = Player.O;
             else
@@ -64,26 +64,26 @@ public class Board {
 
     public String getSymbol(Player player){
         switch(player){
-            case X:
-                return "X";
-            case O:
-                return "O";
-            case NONE:
-                return " ";
-            default:
-                return "UNKNOWN SYMBOL";
+        case X:
+            return "X";
+        case O:
+            return "O";
+        case NONE:
+            return " ";
+        default:
+            return "UNKNOWN SYMBOL";
         }
     }
-	
-	public boolean isThereEmptySquare() {
-    	for(int i  = 0; i < 3; i++){
+
+    public boolean isThereEmptySquare() {
+        for(int i  = 0; i < 3; i++){
             for(int j = 0 ; j < 3; j++){
-            	if (board[i][j].equals(Player.NONE))
-            		return true;
+                if (board[i][j].equals(Player.NONE))
+                    return true;
             }
-    	}
-    	
-    	return false;
+        }
+
+        return false;
     }
 
     public boolean hasWon(int lastColPlayed, int lastRowPlayed){
@@ -119,7 +119,7 @@ public class Board {
         for(int i  = 0; i < 3; i++){
             for(int j = 0 ; j < 3; j++){
 
-               System.out.print(getSymbol(board[i][j]));
+                System.out.print(getSymbol(board[i][j]));
 
                 if (j == 2)
                     System.out.println("");
