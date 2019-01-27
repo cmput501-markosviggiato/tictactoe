@@ -44,7 +44,7 @@ public class TicTacToeGame {
     public Player playGame(){
         Scanner keyboardScanner = new Scanner(System.in);
 
-        while (board.getWinner() == null){
+        while (board.getWinner() == null & !board.getTieStatus()){
             board.printBoard();
             promptNextPlayer();
             String line = keyboardScanner.nextLine();
@@ -52,21 +52,23 @@ public class TicTacToeGame {
             try {
                 board.playMove(Integer.parseInt(input[0]), Integer.parseInt(input[1]));
             } catch (InvalidMoveException e) {
-
-                if (e.getMessage().equals("tie")) {
-                    board.printBoard();
-                    System.out.println("Tied game!");
-                    numberTiedGames =+ 1;
-                    return null;
-                }
-
                 System.out.println("Invalid coordinates. Try again");
             }
         }
 
-        board.printBoard();
-        System.out.println("Player " + board.getWinner() + " has won the game!");
-        return board.getWinner();
+        if (board.getTieStatus()) {
+            board.printBoard();
+            System.out.println("Tied game!");
+            numberTiedGames =+ 1;
+            return null;
+        }
+        else {
+            board.printBoard();
+            System.out.println("Player " + board.getWinner() + " has won the game!");
+            return board.getWinner();
+        }
+
+
     }
 
     public void calculateScores() {

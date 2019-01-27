@@ -11,12 +11,14 @@ public class Board {
     private Player currentPlayer;
     private Player winner;
     private Player board[][];
+    private boolean isTie;
 
     public Board(){
         board = new Player[3][3];
         initBoard();
         winner = null;
         currentPlayer = Player.X;
+        isTie = false;
     }
 
     private void initBoard(){
@@ -44,8 +46,10 @@ public class Board {
         }else{
             board[row][col] = currentPlayer;
 
-            if (!isThereEmptySquare())
-                throw new InvalidMoveException("tie");
+            if (!isThereEmptySquare()) {
+                isTie = true;
+                return;
+            }
 
             if (hasWon(row, col))
                 winner = currentPlayer;
@@ -140,6 +144,10 @@ public class Board {
 
     public Player getPlayerAtPos(int row, int col){
         return board[row][col];
+    }
+
+    public boolean getTieStatus() {
+        return isTie;
     }
 
 
