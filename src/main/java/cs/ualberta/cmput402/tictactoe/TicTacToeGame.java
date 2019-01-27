@@ -11,19 +11,32 @@ import java.util.Scanner;
  */
 public class TicTacToeGame {
 
-    private static Board board;
-    private static int numberWonGames[]; // number of games won by players X and O, respectively
-    private static int numberLostGames[];// number of games lost by players X and O, respectively
-    private static int numberTiedGames;
+    private Board board;
+    private int numberWonGames[]; // number of games won by players X and O, respectively
+    private int numberLostGames[];// number of games lost by players X and O, respectively
+    private int numberTiedGames;
+
+    public TicTacToeGame() {
+        // number of games won by players X and O, respectively - initialization
+        numberWonGames = new int[2];
+        numberWonGames[0] = 0;
+        numberWonGames[1] = 0;
+        // number of games lost by players X and O, respectively - initialization
+        numberLostGames = new int[2];
+        numberLostGames[0] = 0;
+        numberLostGames[1] = 0;
+        numberTiedGames = 0;
+    }
+
 
     public void promptNextPlayer(){
         switch(board.getCurrentPlayer()){
-            case X:
-                System.out.println("It's player " + board.getSymbol(board.getCurrentPlayer()) + "'s turn. Please enter the coordinates of your next move as x,y: ");
-                break;
-            case O:
-                System.out.println("It's player " + board.getSymbol(board.getCurrentPlayer()) + "'s turn. Please enter the coordinates of your next move as x,y: ");
-                break;
+        case X:
+            System.out.println("It's player " + board.getSymbol(board.getCurrentPlayer()) + "'s turn. Please enter the coordinates of your next move as x,y: ");
+            break;
+        case O:
+            System.out.println("It's player " + board.getSymbol(board.getCurrentPlayer()) + "'s turn. Please enter the coordinates of your next move as x,y: ");
+            break;
 
         }
     }
@@ -31,7 +44,7 @@ public class TicTacToeGame {
     public Player playGame(){
         Scanner keyboardScanner = new Scanner(System.in);
 
-        while (board.getWinner() == null){
+        while (board.getWinner() == null && !board.getTieStatus()){
             board.printBoard();
             promptNextPlayer();
             String line = keyboardScanner.nextLine();
@@ -39,38 +52,40 @@ public class TicTacToeGame {
             try {
                 board.playMove(Integer.parseInt(input[0]), Integer.parseInt(input[1]));
             } catch (InvalidMoveException e) {
-				
-	    	if (e.getMessage().equals("tie")) {
-            		board.printBoard();
-            		System.out.println("Tied game!");
-            		numberTiedGames =+ 1;
-            		return null;
-            	}
-				
-            	System.out.println("Invalid coordinates. Try again");
-              }
+                System.out.println("Invalid coordinates. Try again");
+            }
         }
 
-        board.printBoard();
-        System.out.println("Player " + board.getWinner() + " has won the game!");
-        return board.getWinner();
+        if (board.getTieStatus()) {
+            board.printBoard();
+            System.out.println("Tied game!");
+            numberTiedGames =+ 1;
+            return null;
+        }
+        else {
+            board.printBoard();
+            System.out.println("Player " + board.getWinner() + " has won the game!");
+            return board.getWinner();
+        }
+
+
     }
-    
-    public static void calculateScores() {
-    	if (board.getWinner().equals(Player.X)) {
-    		numberWonGames[0] = numberWonGames[0] + 1;
-    		numberLostGames[1] = numberLostGames[1] + 1;
-    	}
-    	else {
-    		numberWonGames[1] = numberWonGames[1] + 1;
-    		numberLostGames[0] = numberLostGames[0] + 1;
-    	}
+
+    public void calculateScores() {
+        if (board.getWinner().equals(Player.X)) {
+            numberWonGames[0] = numberWonGames[0] + 1;
+            numberLostGames[1] = numberLostGames[1] + 1;
+        }
+        else {
+            numberWonGames[1] = numberWonGames[1] + 1;
+            numberLostGames[0] = numberLostGames[0] + 1;
+        }
     }
-    
-    public static void printScoreboard() {
-    	System.out.println("\nScoreboard:\n");
-    	System.out.println("          |Won games |Lost games|Tied games");
-    	System.out.println("------------------------------------------");
+
+    public void printScoreboard() {
+        System.out.println("\nScoreboard:\n");
+        System.out.println("          |Won games |Lost games|Tied games");
+        System.out.println("------------------------------------------");
         System.out.print("Player X  |");
         System.out.print(numberWonGames[0] + "         |");
         System.out.print(numberLostGames[0] + "         |");
@@ -82,38 +97,38 @@ public class TicTacToeGame {
         System.out.println(numberTiedGames);
         System.out.println("------------------------------------------");   
     }
-    
-    public static void initScoreboard() {
-    	// number of games won by players X and O, respectively
-        numberWonGames = new int[2];
-        numberWonGames[0] = 0;
-        numberWonGames[1] = 0;
-        // number of games lost by players X and O, respectively
-        numberLostGames = new int[2];
-        numberLostGames[0] = 0;
-        numberLostGames[1] = 0;
-        numberTiedGames = 0;
+
+    public void createNewBoard() {
+        board = new Board();
     }
-    
 
     public static void main(String args[]){
-    	TicTacToeGame game = new TicTacToeGame();
-        String keepPlaying = "yes";
-        initScoreboard();
+        TicTacToeGame game = new TicTacToeGame();
+        String keepPlaying = "y";
+        //initScoreboard();
         Scanner keepPlayingScanner = new Scanner(System.in);
-        
-        while(keepPlaying.toLowerCase().equals("yes")) {
-        	board = new Board();
-        	Player winner = game.playGame();
-        	if (winner != null)
-        		calculateScores();
-        	printScoreboard();
-        	System.out.println("\nDo you want to play another game?");
-        	keepPlaying = keepPlayingScanner.nextLine();
-        	if (keepPlaying.toLowerCase().equals("no")) {
-        		System.out.println("This is the end of the game! You can see the final scoreboard below.");
-        		printScoreboard();
-        	}
+
+        while(keepPlaying.toLowerCase().equals("y")) {
+            game.createNewBoard();
+            Player winner = game.playGame();
+            
+            if (winner != null)
+                game.calculateScores();
+            game.printScoreboard();
+            System.out.println("\nDo you want to play another game?(y/n)");
+            keepPlaying = keepPlayingScanner.nextLine();
+            
+            // check for invalid user inputs
+            while (!keepPlaying.toLowerCase().equals("y") && !keepPlaying.toLowerCase().equals("n")) {
+                System.out.println("\nInvalid answer. Please enter y (if you want to play another game)"
+                        + " or n (if you do not want to play again).\n");
+                keepPlaying = keepPlayingScanner.nextLine();
+            }
+                
+            if (keepPlaying.toLowerCase().equals("n")) {
+                System.out.println("This is the end of the game! You can see the final scoreboard below.");
+                game.printScoreboard();
+            }
         }
     }
 }
