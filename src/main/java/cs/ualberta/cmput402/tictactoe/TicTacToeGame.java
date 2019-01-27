@@ -44,7 +44,7 @@ public class TicTacToeGame {
     public Player playGame(){
         Scanner keyboardScanner = new Scanner(System.in);
 
-        while (board.getWinner() == null & !board.getTieStatus()){
+        while (board.getWinner() == null && !board.getTieStatus()){
             board.printBoard();
             promptNextPlayer();
             String line = keyboardScanner.nextLine();
@@ -104,19 +104,28 @@ public class TicTacToeGame {
 
     public static void main(String args[]){
         TicTacToeGame game = new TicTacToeGame();
-        String keepPlaying = "yes";
+        String keepPlaying = "y";
         //initScoreboard();
         Scanner keepPlayingScanner = new Scanner(System.in);
 
-        while(keepPlaying.toLowerCase().equals("yes")) {
+        while(keepPlaying.toLowerCase().equals("y")) {
             game.createNewBoard();
             Player winner = game.playGame();
+            
             if (winner != null)
                 game.calculateScores();
             game.printScoreboard();
-            System.out.println("\nDo you want to play another game?");
+            System.out.println("\nDo you want to play another game?(y/n)");
             keepPlaying = keepPlayingScanner.nextLine();
-            if (keepPlaying.toLowerCase().equals("no")) {
+            
+            // check for invalid user inputs
+            while (!keepPlaying.toLowerCase().equals("y") && !keepPlaying.toLowerCase().equals("n")) {
+                System.out.println("\nInvalid answer. Please enter y (if you want to play another game)"
+                        + " or n (if you do not want to play again).\n");
+                keepPlaying = keepPlayingScanner.nextLine();
+            }
+                
+            if (keepPlaying.toLowerCase().equals("n")) {
                 System.out.println("This is the end of the game! You can see the final scoreboard below.");
                 game.printScoreboard();
             }
